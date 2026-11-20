@@ -1,0 +1,82 @@
+[
+  {
+    "source": "Euroemp.csv",
+    "sha256": "a5d6cf5845bf07482f02c4814742170c8eccf2313652b5899fb72b62f24211b7",
+    "rows": 30,
+    "columns": 11,
+    "silver_csv": "euroemp.csv",
+    "silver_parquet": "euroemp.parquet",
+    "duckdb_table": "silver_euroemp",
+    "quality_issues": []
+  },
+  {
+    "source": "Plants_Steneryd_Reserve.csv",
+    "sha256": "a615f61ed7f158d4b259a904322ebea5a86e7165774504c240112808f5287705",
+    "rows": 25,
+    "columns": 18,
+    "silver_csv": "plants_steneryd_reserve.csv",
+    "silver_parquet": "plants_steneryd_reserve.parquet",
+    "duckdb_table": "silver_plants_steneryd_reserve",
+    "quality_issues": []
+  },
+  {
+    "source": "Road_distances_NZ.csv",
+    "sha256": "48015188acbb27f64c7c2a485c15ce2087ab160f18201b0aab771628a85cbce7",
+    "rows": 13,
+    "columns": 14,
+    "silver_csv": "road_distances_nz.csv",
+    "silver_parquet": "road_distances_nz.parquet",
+    "duckdb_table": "silver_road_distances_nz",
+    "quality_issues": []
+  },
+  {
+    "source": "Voting_NJ_Congressmen.csv",
+    "sha256": "a3d611438da3a341a99c8fce921cf350feb6d6fb392d2dea561dd90713519fee",
+    "rows": 15,
+    "columns": 16,
+    "silver_csv": "voting_nj_congressmen.csv",
+    "silver_parquet": "voting_nj_congressmen.parquet",
+    "duckdb_table": "silver_voting_nj_congressmen",
+    "quality_issues": []
+  },
+  {
+    "source": "borboletas.csv",
+    "sha256": "8092099dc2bb29a4be283e1c07ed96c5f47349a471a22fc2f9ace80fee572e49",
+    "rows": 16,
+    "columns": 11,
+    "silver_csv": "borboletas.csv",
+    "silver_parquet": "borboletas.parquet",
+    "duckdb_table": "silver_borboletas",
+    "quality_issues": []
+  },
+  {
+    "source": "caes.csv",
+    "sha256": "36ebe966cebabc3f1e5965fecd5232ca7978da9fb7949abf1ebd7db101ff1f73",
+    "rows": 7,
+    "columns": 7,
+    "silver_csv": "caes.csv",
+    "silver_parquet": "caes.parquet",
+    "duckdb_table": "silver_caes",
+    "quality_issues": []
+  },
+  {
+    "source": "cranios_egipicios.csv",
+    "sha256": "9255c6d5b240459b3a0ea9236455f364ac2683dcfb37d4365da4fc1965e8cbdb",
+    "rows": 150,
+    "columns": 5,
+    "silver_csv": "cranios_egipicios.csv",
+    "silver_parquet": "cranios_egipicios.parquet",
+    "duckdb_table": "silver_cranios_egipicios",
+    "quality_issues": []
+  },
+  {
+    "source": "pardocas.csv",
+    "sha256": "5e185f1839c67aeeca56947ab0629738b89e1cfcb229ee538f0de09f74e65674",
+    "rows": 49,
+    "columns": 6,
+    "silver_csv": "pardocas.csv",
+    "silver_parquet": "pardocas.parquet",
+    "duckdb_table": "silver_pardocas",
+    "quality_issues": []
+  }
+]

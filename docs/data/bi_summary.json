@@ -1,0 +1,629 @@
+{
+  "project": "Estatística Multivariada",
+  "run_id": "20261120T165351Z",
+  "generated_at": "2026-11-20T16:53:58.275801+00:00",
+  "dataset_count": 8,
+  "total_rows": 305,
+  "datasets": [
+    {
+      "dataset": "euroemp",
+      "rows": 30,
+      "columns": 11,
+      "duplicate_rows": 0,
+      "missing_cells": 0,
+      "missing_pct": 0.0,
+      "missing_by_column": {
+        "Country": 0,
+        "Group": 0,
+        "AGR": 0,
+        "MIN": 0,
+        "MAN": 0,
+        "PS": 0,
+        "CON": 0,
+        "SER": 0,
+        "FIN": 0,
+        "SPS": 0,
+        "TC": 0
+      },
+      "numeric_columns": [
+        "AGR",
+        "MIN",
+        "MAN",
+        "PS",
+        "CON",
+        "SER",
+        "FIN",
+        "SPS",
+        "TC"
+      ],
+      "categorical_columns": [
+        "Country",
+        "Group"
+      ],
+      "constant_numeric_columns": [],
+      "pca": {
+        "components": 5,
+        "explained_variance_ratio": [
+          0.345806,
+          0.201026,
+          0.166247,
+          0.11816,
+          0.078918
+        ],
+        "cumulative_variance": 0.910157
+      },
+      "clustering": {
+        "algorithm": "KMeans",
+        "clusters": 3,
+        "silhouette": 0.446164
+      },
+      "classification": {
+        "target": "Group",
+        "algorithm": "RandomForest",
+        "cv_folds": 4,
+        "accuracy": 0.566667,
+        "macro_f1": 0.461413,
+        "n": 30,
+        "baseline_accuracy": 0.4,
+        "tracking": "MLflow optional dependency not installed"
+      }
+    },
+    {
+      "dataset": "plants_steneryd_reserve",
+      "rows": 25,
+      "columns": 18,
+      "duplicate_rows": 0,
+      "missing_cells": 1,
+      "missing_pct": 0.222,
+      "missing_by_column": {
+        "Species": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0,
+        "13": 0,
+        "14": 0,
+        "15": 0,
+        "16": 0,
+        "17": 1
+      },
+      "numeric_columns": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17"
+      ],
+      "categorical_columns": [
+        "Species"
+      ],
+      "constant_numeric_columns": [],
+      "pca": {
+        "components": 5,
+        "explained_variance_ratio": [
+          0.335527,
+          0.202304,
+          0.157203,
+          0.083612,
+          0.066204
+        ],
+        "cumulative_variance": 0.84485
+      },
+      "clustering": {
+        "algorithm": "KMeans",
+        "clusters": 3,
+        "silhouette": 0.244176
+      },
+      "classification": null
+    },
+    {
+      "dataset": "road_distances_nz",
+      "rows": 13,
+      "columns": 14,
+      "duplicate_rows": 0,
+      "missing_cells": 0,
+      "missing_pct": 0.0,
+      "missing_by_column": {
+        "City": 0,
+        "Alexandra": 0,
+        "Balclutha": 0,
+        "Blenheim": 0,
+        "Christchurch": 0,
+        "Dunedin": 0,
+        "Franz_Josef": 0,
+        "Greymouth": 0,
+        "Invercargill": 0,
+        "Milford": 0,
+        "Nelson": 0,
+        "Queenstown": 0,
+        "Te_Anau": 0,
+        "Timaru": 0
+      },
+      "numeric_columns": [
+        "Alexandra",
+        "Balclutha",
+        "Blenheim",
+        "Christchurch",
+        "Dunedin",
+        "Franz_Josef",
+        "Greymouth",
+        "Invercargill",
+        "Milford",
+        "Nelson",
+        "Queenstown",
+        "Te_Anau",
+        "Timaru"
+      ],
+      "categorical_columns": [
+        "City"
+      ],
+      "constant_numeric_columns": [],
+      "pca": {
+        "components": 5,
+        "explained_variance_ratio": [
+          0.697035,
+          0.182943,
+          0.093203,
+          0.011513,
+          0.005449
+        ],
+        "cumulative_variance": 0.990144
+      },
+      "clustering": {
+        "algorithm": "KMeans",
+        "clusters": 2,
+        "silhouette": 0.474032
+      },
+      "classification": null
+    },
+    {
+      "dataset": "voting_nj_congressmen",
+      "rows": 15,
+      "columns": 16,
+      "duplicate_rows": 0,
+      "missing_cells": 0,
+      "missing_pct": 0.0,
+      "missing_by_column": {
+        "Representative": 0,
+        "Hunt_(R)": 0,
+        "Sandman_(R)": 0,
+        "Howard_(D)": 0,
+        "Thompson_(D)": 0,
+        "Frelinghuysen_(R)": 0,
+        "Forsythe_(R)": 0,
+        "Widnall_(R)": 0,
+        "Roe_(D)": 0,
+        "Helstoski_(D)": 0,
+        "Rodino_(D)": 0,
+        "Minish(D)": 0,
+        "Rinaldo(R)": 0,
+        "Maraziti(R)": 0,
+        "Daniels_(D)": 0,
+        "Pattern(D)": 0
+      },
+      "numeric_columns": [
+        "Hunt_(R)",
+        "Sandman_(R)",
+        "Howard_(D)",
+        "Thompson_(D)",
+        "Frelinghuysen_(R)",
+        "Forsythe_(R)",
+        "Widnall_(R)",
+        "Roe_(D)",
+        "Helstoski_(D)",
+        "Rodino_(D)",
+        "Minish(D)",
+        "Rinaldo(R)",
+        "Maraziti(R)",
+        "Daniels_(D)",
+        "Pattern(D)"
+      ],
+      "categorical_columns": [
+        "Representative"
+      ],
+      "constant_numeric_columns": [],
+      "pca": {
+        "components": 5,
+        "explained_variance_ratio": [
+          0.660368,
+          0.1501,
+          0.059346,
+          0.048879,
+          0.035636
+        ],
+        "cumulative_variance": 0.954328
+      },
+      "clustering": {
+        "algorithm": "KMeans",
+        "clusters": 2,
+        "silhouette": 0.495513
+      },
+      "classification": null
+    },
+    {
+      "dataset": "borboletas",
+      "rows": 16,
+      "columns": 11,
+      "duplicate_rows": 0,
+      "missing_cells": 0,
+      "missing_pct": 0.0,
+      "missing_by_column": {
+        "Colony": 0,
+        "Altitude": 0,
+        "Ann.Prec": 0,
+        "Max.Temp": 0,
+        "Min.Temp": 0,
+        "PFPGi0.40": 0,
+        "PFPGi0.60": 0,
+        "PFPGi0.80": 0,
+        "PFPGi1.00": 0,
+        "PFPGi1.16": 0,
+        "PFPGi1.30": 0
+      },
+      "numeric_columns": [
+        "Altitude",
+        "Ann.Prec",
+        "Max.Temp",
+        "Min.Temp",
+        "PFPGi0.40",
+        "PFPGi0.60",
+        "PFPGi0.80",
+        "PFPGi1.00",
+        "PFPGi1.16",
+        "PFPGi1.30"
+      ],
+      "categorical_columns": [
+        "Colony"
+      ],
+      "constant_numeric_columns": [],
+      "pca": {
+        "components": 5,
+        "explained_variance_ratio": [
+          0.509235,
+          0.269116,
+          0.085078,
+          0.049153,
+          0.035265
+        ],
+        "cumulative_variance": 0.947846
+      },
+      "clustering": {
+        "algorithm": "KMeans",
+        "clusters": 2,
+        "silhouette": 0.47668
+      },
+      "classification": null
+    },
+    {
+      "dataset": "caes",
+      "rows": 7,
+      "columns": 7,
+      "duplicate_rows": 0,
+      "missing_cells": 0,
+      "missing_pct": 0.0,
+      "missing_by_column": {
+        "Group": 0,
+        "Mand_Breadth": 0,
+        "Mand_Height": 0,
+        "Mol1_Length": 0,
+        "Mol1_Breadth": 0,
+        "Mol1-3_Length": 0,
+        "Mol1-4_Length": 0
+      },
+      "numeric_columns": [
+        "Mand_Breadth",
+        "Mand_Height",
+        "Mol1_Length",
+        "Mol1_Breadth",
+        "Mol1-3_Length",
+        "Mol1-4_Length"
+      ],
+      "categorical_columns": [
+        "Group"
+      ],
+      "constant_numeric_columns": [],
+      "pca": {
+        "components": 5,
+        "explained_variance_ratio": [
+          0.904934,
+          0.061818,
+          0.021255,
+          0.010618,
+          0.001025
+        ],
+        "cumulative_variance": 0.99965
+      },
+      "clustering": {
+        "algorithm": "KMeans",
+        "clusters": 2,
+        "silhouette": 0.52771
+      },
+      "classification": null
+    },
+    {
+      "dataset": "cranios_egipicios",
+      "rows": 150,
+      "columns": 5,
+      "duplicate_rows": 0,
+      "missing_cells": 0,
+      "missing_pct": 0.0,
+      "missing_by_column": {
+        "Period": 0,
+        "Maximum_breadth": 0,
+        "Basibregmatic_height": 0,
+        "Basialveolar_length": 0,
+        "Nasal_height": 0
+      },
+      "numeric_columns": [
+        "Maximum_breadth",
+        "Basibregmatic_height",
+        "Basialveolar_length",
+        "Nasal_height"
+      ],
+      "categorical_columns": [
+        "Period"
+      ],
+      "constant_numeric_columns": [],
+      "pca": {
+        "components": 4,
+        "explained_variance_ratio": [
+          0.334324,
+          0.301598,
+          0.1906,
+          0.173478
+        ],
+        "cumulative_variance": 1.0
+      },
+      "clustering": {
+        "algorithm": "KMeans",
+        "clusters": 4,
+        "silhouette": 0.201168
+      },
+      "classification": {
+        "target": "Period",
+        "algorithm": "RandomForest",
+        "cv_folds": 5,
+        "accuracy": 0.293333,
+        "macro_f1": 0.291771,
+        "n": 150,
+        "baseline_accuracy": 0.4,
+        "tracking": "MLflow optional dependency not installed"
+      }
+    },
+    {
+      "dataset": "pardocas",
+      "rows": 49,
+      "columns": 6,
+      "duplicate_rows": 0,
+      "missing_cells": 0,
+      "missing_pct": 0.0,
+      "missing_by_column": {
+        "Survivorship": 0,
+        "Total_length": 0,
+        "Alar_extent": 0,
+        "L_beak_head": 0,
+        "L_humerous": 0,
+        "L_keel_sternum": 0
+      },
+      "numeric_columns": [
+        "Total_length",
+        "Alar_extent",
+        "L_beak_head",
+        "L_humerous",
+        "L_keel_sternum"
+      ],
+      "categorical_columns": [
+        "Survivorship"
+      ],
+      "constant_numeric_columns": [],
+      "pca": {
+        "components": 5,
+        "explained_variance_ratio": [
+          0.723196,
+          0.106301,
+          0.077285,
+          0.060313,
+          0.032906
+        ],
+        "cumulative_variance": 1.0
+      },
+      "clustering": {
+        "algorithm": "KMeans",
+        "clusters": 4,
+        "silhouette": 0.248054
+      },
+      "classification": {
+        "target": "Survivorship",
+        "algorithm": "RandomForest",
+        "cv_folds": 5,
+        "accuracy": 0.428571,
+        "macro_f1": 0.422559,
+        "n": 49,
+        "baseline_accuracy": 0.571429,
+        "tracking": "MLflow optional dependency not installed"
+      }
+    }
+  ],
+  "manifest": [
+    {
+      "source": "Euroemp.csv",
+      "sha256": "a5d6cf5845bf07482f02c4814742170c8eccf2313652b5899fb72b62f24211b7",
+      "rows": 30,
+      "columns": 11,
+      "silver_csv": "euroemp.csv",
+      "silver_parquet": "euroemp.parquet",
+      "duckdb_table": "silver_euroemp",
+      "quality_issues": []
+    },
+    {
+      "source": "Plants_Steneryd_Reserve.csv",
+      "sha256": "a615f61ed7f158d4b259a904322ebea5a86e7165774504c240112808f5287705",
+      "rows": 25,
+      "columns": 18,
+      "silver_csv": "plants_steneryd_reserve.csv",
+      "silver_parquet": "plants_steneryd_reserve.parquet",
+      "duckdb_table": "silver_plants_steneryd_reserve",
+      "quality_issues": []
+    },
+    {
+      "source": "Road_distances_NZ.csv",
+      "sha256": "48015188acbb27f64c7c2a485c15ce2087ab160f18201b0aab771628a85cbce7",
+      "rows": 13,
+      "columns": 14,
+      "silver_csv": "road_distances_nz.csv",
+      "silver_parquet": "road_distances_nz.parquet",
+      "duckdb_table": "silver_road_distances_nz",
+      "quality_issues": []
+    },
+    {
+      "source": "Voting_NJ_Congressmen.csv",
+      "sha256": "a3d611438da3a341a99c8fce921cf350feb6d6fb392d2dea561dd90713519fee",
+      "rows": 15,
+      "columns": 16,
+      "silver_csv": "voting_nj_congressmen.csv",
+      "silver_parquet": "voting_nj_congressmen.parquet",
+      "duckdb_table": "silver_voting_nj_congressmen",
+      "quality_issues": []
+    },
+    {
+      "source": "borboletas.csv",
+      "sha256": "8092099dc2bb29a4be283e1c07ed96c5f47349a471a22fc2f9ace80fee572e49",
+      "rows": 16,
+      "columns": 11,
+      "silver_csv": "borboletas.csv",
+      "silver_parquet": "borboletas.parquet",
+      "duckdb_table": "silver_borboletas",
+      "quality_issues": []
+    },
+    {
+      "source": "caes.csv",
+      "sha256": "36ebe966cebabc3f1e5965fecd5232ca7978da9fb7949abf1ebd7db101ff1f73",
+      "rows": 7,
+      "columns": 7,
+      "silver_csv": "caes.csv",
+      "silver_parquet": "caes.parquet",
+      "duckdb_table": "silver_caes",
+      "quality_issues": []
+    },
+    {
+      "source": "cranios_egipicios.csv",
+      "sha256": "9255c6d5b240459b3a0ea9236455f364ac2683dcfb37d4365da4fc1965e8cbdb",
+      "rows": 150,
+      "columns": 5,
+      "silver_csv": "cranios_egipicios.csv",
+      "silver_parquet": "cranios_egipicios.parquet",
+      "duckdb_table": "silver_cranios_egipicios",
+      "quality_issues": []
+    },
+    {
+      "source": "pardocas.csv",
+      "sha256": "5e185f1839c67aeeca56947ab0629738b89e1cfcb229ee538f0de09f74e65674",
+      "rows": 49,
+      "columns": 6,
+      "silver_csv": "pardocas.csv",
+      "silver_parquet": "pardocas.parquet",
+      "duckdb_table": "silver_pardocas",
+      "quality_issues": []
+    }
+  ],
+  "quality": [
+    {
+      "run_id": "20261120T165351Z",
+      "dataset_key": "euroemp",
+      "rows": 30,
+      "missing_cells": 0,
+      "duplicate_rows": 0,
+      "error_count": 0
+    },
+    {
+      "run_id": "20261120T165351Z",
+      "dataset_key": "plants_steneryd_reserve",
+      "rows": 25,
+      "missing_cells": 1,
+      "duplicate_rows": 0,
+      "error_count": 0
+    },
+    {
+      "run_id": "20261120T165351Z",
+      "dataset_key": "road_distances_nz",
+      "rows": 13,
+      "missing_cells": 0,
+      "duplicate_rows": 0,
+      "error_count": 0
+    },
+    {
+      "run_id": "20261120T165351Z",
+      "dataset_key": "voting_nj_congressmen",
+      "rows": 15,
+      "missing_cells": 0,
+      "duplicate_rows": 0,
+      "error_count": 0
+    },
+    {
+      "run_id": "20261120T165351Z",
+      "dataset_key": "borboletas",
+      "rows": 16,
+      "missing_cells": 0,
+      "duplicate_rows": 0,
+      "error_count": 0
+    },
+    {
+      "run_id": "20261120T165351Z",
+      "dataset_key": "caes",
+      "rows": 7,
+      "missing_cells": 0,
+      "duplicate_rows": 0,
+      "error_count": 0
+    },
+    {
+      "run_id": "20261120T165351Z",
+      "dataset_key": "cranios_egipicios",
+      "rows": 150,
+      "missing_cells": 0,
+      "duplicate_rows": 0,
+      "error_count": 0
+    },
+    {
+      "run_id": "20261120T165351Z",
+      "dataset_key": "pardocas",
+      "rows": 49,
+      "missing_cells": 0,
+      "duplicate_rows": 0,
+      "error_count": 0
+    }
+  ],
+  "storage": {
+    "formats": [
+      "CSV",
+      "Parquet"
+    ],
+    "query_engine": "DuckDB",
+    "warehouse": "data/gold/analytics.duckdb",
+    "model": [
+      "dim_dataset",
+      "dim_run",
+      "fact_data_quality",
+      "bi_dataset_quality"
+    ]
+  }
+}
