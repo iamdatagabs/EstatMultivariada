@@ -10,6 +10,7 @@ import duckdb
 import numpy as np
 import pandas as pd
 import yaml
+from jsonschema import Draft202012Validator
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.ensemble import RandomForestClassifier
@@ -51,6 +52,13 @@ def load_config(path: Path) -> dict:
     config = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     if not isinstance(config.get("datasets"), list):
         raise ValueError("Configuration must define a 'datasets' list")
+    schema_path = path.with_name("datasets.schema.json")
+    if schema_path.exists():
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        errors = sorted(Draft202012Validator(schema).iter_errors(config), key=lambda error: list(error.path))
+        if errors:
+            details = "; ".join(f"{list(error.path)}: {error.message}" for error in errors)
+            raise ValueError(f"Dataset configuration schema validation failed: {details}")
     files = [item.get("file") for item in config["datasets"]]
     if any(not value for value in files) or len(files) != len(set(files)):
         raise ValueError("Every dataset must have a unique, non-empty file entry")
