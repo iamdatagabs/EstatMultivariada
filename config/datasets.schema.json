@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://iamdatagabs.github.io/EstatMultivariada/schemas/datasets.schema.json",
+  "title": "Estatística Multivariada dataset configuration",
+  "type": "object",
+  "required": ["version", "datasets"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"type": "integer", "const": 1},
+    "defaults": {"type": "object"},
+    "datasets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["file"],
+        "additionalProperties": false,
+        "properties": {
+          "file": {"type": "string", "minLength": 1, "pattern": "^[^/\\\\]+\\.csv$"},
+          "description": {"type": "string"},
+          "domain": {"type": "string"},
+          "contract": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "required_columns": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+              "not_null": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+              "unique": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+              "accepted_values": {"type": "object", "additionalProperties": {"type": "array"}},
+              "fail_on_error": {"type": "boolean"}
+            }
+          },
+          "model": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["target"],
+            "properties": {
+              "target": {"type": "string", "minLength": 1},
+              "exclude_features": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+            }
+          }
+        }
+      }
+    }
+  }
+}
