@@ -67,7 +67,7 @@ def test_pipeline_builds_warehouse_and_bi_artifacts(tmp_path):
 
 def test_dataset_config_schema_rejects_unknown_fields(tmp_path):
     config = tmp_path / "datasets.yml"
-    config.write_text("version: 1\\ndatasets:\\n  - file: sample.csv\\n    unknown_field: true\\n",
+    config.write_text("version: 1\ndatasets:\n  - file: sample.csv\n    unknown_field: true\n",
                       encoding="utf-8")
     schema = tmp_path / "datasets.schema.json"
     schema.write_text('{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object",'
