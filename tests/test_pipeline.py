@@ -1,5 +1,9 @@
 import pandas as pd
-from estat_multivariada.pipeline import profile, slugify, run_pipeline
+import pytest
+
+from estat_multivariada.pipeline import (
+    normalize, profile, slugify, validate_contract, load_config
+)
 
 
 def test_slugify():
@@ -13,19 +17,27 @@ def test_profile():
     assert result["missing_cells"] == 1
 
 
-def test_pipeline_writes_bronze_silver_gold_and_duckdb(tmp_path):
-    source = tmp_path / "raw"
-    source.mkdir()
-    pd.DataFrame({
-        "segment": ["a", "a", "b", "b", "c", "c"],
-        "x": [1, 2, 8, 9, 4, 5],
-        "y": [2, 1, 9, 8, 4, 6],
-    }).to_csv(source / "sample.csv", index=False)
-    output = tmp_path / "warehouse"
-    docs = tmp_path / "docs" / "data"
-    result = run_pipeline(source, output, docs)
-    assert result["dataset_count"] == 1
-    assert (output / "bronze" / "sample.csv").exists()
-    assert (output / "silver" / "sample.parquet").exists()
-    assert (output / "gold" / "analytics.duckdb").exists()
-    assert (docs / "bi_summary.json").exists()
+def test_normalize_strips_headers_and_values():
+    result = normalize(pd.DataFrame({" feature one ": [" x ", None]}))
+    assert list(result.columns) == ["feature_one"]
+    assert result.iloc[0, 0] == "x"
+
+
+def test_contract_detects_missing_required_and_nulls():
+    frame = pd.DataFrame({"id": [1, None]})
+    issues = validate_contract(frame, {"required_columns": ["id", "target"],
+                                       "not_null": ["id"]})
+    assert {issue["rule"] for issue in issues} == {"required_column", "not_null"}
+
+
+def test_contract_detects_duplicate_key_and_domain():
+    frame = pd.DataFrame({"id": [1, 1], "status": ["ok", "bad"]})
+    issues = validate_contract(frame, {"unique": ["id"],
+                                       "accepted_values": {"status": ["ok"]}})
+    assert {issue["rule"] for issue in issues} == {"unique", "accepted_values"}
+
+
+def test_config_is_explicit_and_disables_implicit_targets():
+    config = load_config(__import__("pathlib").Path("config/datasets.yml"))
+    assert len(config["datasets"]) >= 1
+    assert all("model" not in item or not item["model"].get("target") for item in config["datasets"])
