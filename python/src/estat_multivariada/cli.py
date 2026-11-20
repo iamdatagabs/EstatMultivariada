@@ -6,7 +6,7 @@ from .pipeline import run_pipeline
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Governed data engineering and multivariate analytics")
+    parser = argparse.ArgumentParser(description="ETL, multivariate analytics and ML")
     sub = parser.add_subparsers(dest="command", required=True)
     run = sub.add_parser("run")
     run.add_argument("--input", type=Path, default=Path("data/raw"))
@@ -15,8 +15,11 @@ def main():
     run.add_argument("--config", type=Path, default=Path("config/datasets.yml"))
     args = parser.parse_args()
     summary = run_pipeline(args.input, args.output, args.docs_data, args.config)
-    print(json.dumps({"run_id": summary["run_id"], "datasets": summary["dataset_count"],
-                      "rows": summary["total_rows"]}))
+    print(json.dumps({
+        "datasets": summary["dataset_count"],
+        "rows": summary["total_rows"],
+        "run_id": summary["run_id"],
+    }))
 
 
 if __name__ == "__main__":
