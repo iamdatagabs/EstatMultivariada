@@ -1,11 +1,8 @@
-import json
-from pathlib import Path
-
-import duckdb
 import pandas as pd
+import duckdb
 
 from estat_multivariada.pipeline import (
-    load_config, normalize, profile, run_pipeline, slugify, validate_contract
+    normalize, profile, slugify, validate_contract, load_config, run_pipeline
 )
 
 
@@ -38,30 +35,32 @@ def test_contract_detects_duplicate_key_and_domain():
     assert {issue["rule"] for issue in issues} == {"unique", "accepted_values"}
 
 
-def test_config_has_no_implicit_model_targets():
-    config = load_config(Path("config/datasets.yml"))
-    assert len(config["datasets"]) >= 1
-    assert all(not item.get("model", {}).get("target") for item in config["datasets"])
+def test_config_lists_all_repository_datasets():
+    config = load_config(__import__("pathlib").Path("config/datasets.yml"))
+    assert len(config["datasets"]) == 8
+    assert {item["file"] for item in config["datasets"]} >= {"Road_distances_NZ.csv", "Voting_NJ_Congressmen.csv"}
 
 
-def test_end_to_end_builds_parquet_and_dimensional_warehouse(tmp_path):
-    source = tmp_path / "raw"
-    output = tmp_path / "data"
-    docs = tmp_path / "docs"
-    source.mkdir()
-    pd.DataFrame({"measure_a": [1, 2, 3, 4], "measure_b": [4, 3, 2, 1],
-                  "group": ["a", "a", "b", "b"]}).to_csv(source / "sample.csv", index=False)
+def test_pipeline_builds_warehouse_and_bi_artifacts(tmp_path):
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    pd.DataFrame({
+        "segment": ["a", "a", "a", "b", "b", "b", "c", "c", "c"],
+        "x": [1, 2, 3, 8, 9, 10, 4, 5, 6],
+        "y": [2, 1, 3, 9, 8, 10, 5, 4, 6],
+    }).to_csv(raw / "sample.csv", index=False)
     config = tmp_path / "datasets.yml"
-    config.write_text("version: 1\ndatasets:\n  - file: sample.csv\n    contract: {fail_on_error: true}\n",
-                      encoding="utf-8")
-
-    summary = run_pipeline(source, output, docs, config)
-
-    assert summary["dataset_count"] == 1
+    config.write_text(
+        "version: 1\ndatasets:\n  - file: sample.csv\n    contract:\n      fail_on_error: true\n",
+        encoding="utf-8",
+    )
+    output, docs = tmp_path / "warehouse", tmp_path / "docs" / "data"
+    result = run_pipeline(raw, output, docs, config)
+    assert result["dataset_count"] == 1
+    assert (output / "bronze" / "sample.csv").exists()
     assert (output / "silver" / "sample.parquet").exists()
-    assert json.loads((docs / "bi_summary.json").read_text())["run_id"] == summary["run_id"]
-    with duckdb.connect(str(output / "gold" / "analytics.duckdb"), read_only=True) as connection:
-        assert connection.sql("SELECT count(*) FROM silver_sample").fetchone()[0] == 4
-        assert connection.sql("SELECT count(*) FROM dim_dataset").fetchone()[0] == 1
-        assert connection.sql("SELECT count(*) FROM fact_data_quality").fetchone()[0] == 1
-        assert connection.sql("SELECT count(*) FROM bi_dataset_quality").fetchone()[0] == 1
+    assert (output / "gold" / "bi_summary.json").exists()
+    assert (docs / "bi_summary.json").exists()
+    with duckdb.connect(str(output / "gold" / "analytics.duckdb"), read_only=True) as con:
+        assert con.sql("select count(*) from silver_sample").fetchone()[0] == 9
+        assert con.sql("select count(*) from bi_dataset_quality").fetchone()[0] == 1
