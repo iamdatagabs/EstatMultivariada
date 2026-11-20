@@ -62,5 +62,5 @@ def test_pipeline_builds_warehouse_and_bi_artifacts(tmp_path):
     assert (output / "gold" / "bi_summary.json").exists()
     assert (docs / "bi_summary.json").exists()
     with duckdb.connect(str(output / "gold" / "analytics.duckdb"), read_only=True) as con:
-        assert con.sql("select count(*) from silver_sample").fetchone()[0] == 9
-        assert con.sql("select count(*) from bi_dataset_quality").fetchone()[0] == 1
+        assert con.execute("select count(*) from silver_sample").fetchone()[0] == 9
+        assert con.execute("select count(*) from bi_dataset_quality").fetchone()[0] == 1
