@@ -15,24 +15,25 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "23 8 * * 1"
-permissions:
-  contents: write
-  pages: write
-  id-token: write
 concurrency:
   group: multivariate-data-platform
   cancel-in-progress: false
 jobs:
-  quality:
+  validate:
+    name: Validate code and metadata
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
           cache-dependency-path: python/requirements.txt
-      - name: Install
+      - name: Install dependencies
         run: pip install -r python/requirements.txt -r python/requirements-dev.txt
       - name: Compile and test
         env:
@@ -40,13 +41,32 @@ jobs:
         run: |
           python -m compileall -q python/src
           pytest -q
-      - name: Validate pipeline on repository datasets
-        if: github.event_name != 'pull_request'
+      - name: Validate dataset metadata
+        env:
+          PYTHONPATH: python/src
+        run: python -c "from pathlib import Path; from estat_multivariada.pipeline import load_config; print(load_config(Path('config/datasets.yml'))['version'])"
+  build:
+    name: Build data products and Pages artifact
+    if: github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: python/requirements.txt
+      - name: Install runtime dependencies
+        run: pip install -r python/requirements.txt
+      - name: Execute governed data pipeline
         env:
           PYTHONPATH: python/src
         run: python -m estat_multivariada.cli run --input data/raw --output data --docs-data docs/data --config config/datasets.yml
-      - name: Commit data products
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+      - name: Commit reproducible data products
+        if: github.ref == 'refs/heads/main'
         run: |
           if [[ -n "$(git status --porcelain data/bronze data/silver data/gold docs/data)" ]]; then
             git config user.name "github-actions[bot]"
@@ -56,14 +76,17 @@ jobs:
             git push
           fi
       - name: Upload Pages artifact
-        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs
   deploy:
+    name: Deploy GitHub Pages
     if: github.event_name != 'pull_request'
-    needs: quality
+    needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
