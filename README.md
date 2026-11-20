@@ -34,9 +34,9 @@ CSV sources + datasets.yml
         └── MLflow experiment tracking (when a target is explicitly configured)
 ```
 
-## Engenharia e governança
+## Documentação de engenharia\n\nA documentação técnica detalhada está em [`docs/engineering/`](docs/engineering/README.md): arquitetura, pipeline passo a passo, contratos de dados, runbook operacional e Architecture Decision Records (ADRs).\n\n## Engenharia e governança
 
-- **Metadata as code:** `config/datasets.yml` registra datasets, domínio, contratos e configuração de modelos.
+- **Metadata as code:** `config/datasets.yml` registra datasets, domínio, contratos e configuração de modelos; `config/datasets.schema.json` valida sua estrutura no CI.
 - **Lineage:** SHA-256 dos arquivos de origem, identificação da execução e manifesto de artefatos.
 - **Medallion architecture:** Bronze preserva cópia da fonte; Silver normaliza cabeçalhos/valores e publica CSV/Parquet; Gold concentra produtos analíticos.
 - **Data contracts:** colunas obrigatórias, não nulos, unicidade e domínios aceitos são configuráveis. Violações bloqueiam a execução por padrão.
