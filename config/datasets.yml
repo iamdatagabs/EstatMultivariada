@@ -2,37 +2,50 @@ version: 1
 defaults:
   encoding: utf-8-sig
   csv_detection: python-engine-sniff
-# Targets are intentionally absent until their semantics are reviewed.
 datasets:
   - file: Euroemp.csv
-    description: Dataset de exemplo para análise multivariada.
-    domain: teaching
-    contract: {fail_on_error: true}
+    description: Estrutura de emprego por setor econômico e grupo regional.
+    domain: economics
+    contract:
+      fail_on_error: true
+    model:
+      target: Group
   - file: Plants_Steneryd_Reserve.csv
-    description: Dados de reserva vegetal.
+    description: Abundância de espécies vegetais em uma reserva.
     domain: ecology
-    contract: {fail_on_error: true}
+    contract:
+      fail_on_error: true
   - file: Road_distances_NZ.csv
-    description: Dados de distâncias rodoviárias.
+    description: Matriz de distâncias rodoviárias entre cidades da Nova Zelândia.
     domain: geography
-    contract: {fail_on_error: true}
+    contract:
+      fail_on_error: true
   - file: Voting_NJ_Congressmen.csv
-    description: Votações de congressistas de New Jersey.
+    description: Matriz de similaridade de votações de congressistas de New Jersey.
     domain: social_science
-    contract: {fail_on_error: true}
+    contract:
+      fail_on_error: true
   - file: borboletas.csv
-    description: Dados de borboletas.
+    description: Variáveis ambientais e frequências morfológicas de borboletas.
     domain: ecology
-    contract: {fail_on_error: true}
+    contract:
+      fail_on_error: true
   - file: caes.csv
-    description: Dados de cães.
-    domain: teaching
-    contract: {fail_on_error: true}
+    description: Medidas morfométricas comparativas de canídeos.
+    domain: biology
+    contract:
+      fail_on_error: true
   - file: cranios_egipicios.csv
-    description: Medidas cranianas históricas.
+    description: Medidas cranianas por período histórico.
     domain: anthropology
-    contract: {fail_on_error: true}
+    contract:
+      fail_on_error: true
+    model:
+      target: Period
   - file: pardocas.csv
-    description: Dados de exemplo multivariado.
-    domain: teaching
-    contract: {fail_on_error: true}
+    description: Medidas morfométricas e sobrevivência.
+    domain: biology
+    contract:
+      fail_on_error: true
+    model:
+      target: Survivorship
