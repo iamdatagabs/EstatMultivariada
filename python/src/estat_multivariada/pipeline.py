@@ -159,13 +159,17 @@ def analyze(frame: pd.DataFrame, name: str, gold: Path, model_config: dict | Non
         estimator.fit(features, labels)
         importance = pd.DataFrame({"feature": features.columns, "importance": estimator[-1].feature_importances_})
         importance.sort_values("importance", ascending=False).to_csv(output / "feature_importance.csv", index=False)
-        import mlflow
-        mlflow.set_tracking_uri(f"file:{(gold.parent / 'mlruns').resolve()}")
-        mlflow.set_experiment(f"estat-multivariada-{name}")
-        with mlflow.start_run(run_name="random-forest-stratified-cv"):
-            mlflow.log_params({"target": target, "algorithm": "RandomForest", "cv_folds": folds, "n": len(labels)})
-            mlflow.log_metrics({key: metrics[key] for key in ("accuracy", "macro_f1", "baseline_accuracy")})
-            mlflow.log_artifact(str(output / "feature_importance.csv"))
+        try:
+            import mlflow
+        except ImportError:
+            metrics["tracking"] = "MLflow optional dependency not installed"
+        else:
+            mlflow.set_tracking_uri(f"file:{(gold.parent / 'mlruns').resolve()}")
+            mlflow.set_experiment(f"estat-multivariada-{name}")
+            with mlflow.start_run(run_name="random-forest-stratified-cv"):
+                mlflow.log_params({"target": target, "algorithm": "RandomForest", "cv_folds": folds, "n": len(labels)})
+                mlflow.log_metrics({key: metrics[key] for key in ("accuracy", "macro_f1", "baseline_accuracy")})
+                mlflow.log_artifact(str(output / "feature_importance.csv"))
     return result
 
 
