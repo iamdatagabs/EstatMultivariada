@@ -42,7 +42,7 @@ CSV sources + datasets.yml
 - **Data contracts:** colunas obrigatórias, não nulos, unicidade e domínios aceitos são configuráveis. Violações bloqueiam a execução por padrão.
 - **Warehouse:** DuckDB materializa tabelas Silver e modelo dimensional de qualidade, com consulta SQL local.
 - **Analytics:** perfilamento, missingness, PCA e clustering exploratório.
-- **ML governado:** nenhum target é inferido. O treinamento só ocorre com `model.target` declarado no YAML; validação estratificada, baseline e macro-F1 são registrados. MLflow mantém parâmetros, métricas e artefatos localmente.
+- **ML governado:** nenhum target é inferido. O treinamento só ocorre com `model.target` declarado no YAML; validação estratificada, baseline e macro-F1 são registrados. Quando instalado via `python/requirements-ml.txt`, MLflow mantém parâmetros, métricas e artefatos localmente; sem o extra, os resultados permanecem nos artefatos Gold.
 - **Automação:** testes unitários/integração, pipeline e publicação do dashboard por GitHub Actions.
 
 ## Executar
@@ -50,7 +50,7 @@ CSV sources + datasets.yml
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
-pip install -r python/requirements.txt -r python/requirements-dev.txt
+pip install -r python/requirements.txt -r python/requirements-dev.txt\n# Opcional: tracking de experimentos supervisionados\npip install -r python/requirements-ml.txt
 PYTHONPATH=python/src python -m estat_multivariada.cli run \\
   --input data/raw --output data --docs-data docs/data \\
   --config config/datasets.yml
