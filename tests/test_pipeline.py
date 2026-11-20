@@ -64,3 +64,17 @@ def test_pipeline_builds_warehouse_and_bi_artifacts(tmp_path):
     with duckdb.connect(str(output / "gold" / "analytics.duckdb"), read_only=True) as con:
         assert con.execute("select count(*) from silver_sample").fetchone()[0] == 9
         assert con.execute("select count(*) from bi_dataset_quality").fetchone()[0] == 1
+
+def test_dataset_config_schema_rejects_unknown_fields(tmp_path):
+    config = tmp_path / "datasets.yml"
+    config.write_text("version: 1\\ndatasets:\\n  - file: sample.csv\\n    unknown_field: true\\n",
+                      encoding="utf-8")
+    schema = tmp_path / "datasets.schema.json"
+    schema.write_text('{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object",'
+                      '"required":["version","datasets"],"additionalProperties":false,'
+                      '"properties":{"version":{"type":"integer"},"datasets":{"type":"array",'
+                      '"items":{"type":"object","required":["file"],"additionalProperties":false,'
+                      '"properties":{"file":{"type":"string"}}}}}', encoding="utf-8")
+    import pytest
+    with pytest.raises(ValueError, match="schema validation failed"):
+        load_config(config)
