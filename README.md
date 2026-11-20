@@ -1,72 +1,97 @@
-# Estatística Multivariada | Data Engineering, Analytics, BI & ML
+# Estatística Multivariada — Data Platform, Analytics, BI & ML
 
-Projeto acadêmico de Estatística Multivariada (UEPG, 2024/2), evoluído para um laboratório reprodutível de engenharia de dados, ciência de dados, BI e machine learning. Os scripts originais em R e os CSVs históricos na raiz são preservados.
+Laboratório reprodutível de Engenharia de Dados e Estatística Multivariada. O repositório preserva os materiais didáticos originais em R e os dados de origem, enquanto adiciona uma plataforma de ingestão, qualidade, armazenamento analítico, modelagem dimensional, análise exploratória e experimentação supervisionada configurável.
 
 ## Arquitetura
 
 ```text
-CSV → Bronze (cópias + SHA-256) → Silver (dados limpos CSV/Parquet)
-    → Gold (qualidade, perfis, PCA, clusters, ML, DuckDB)
-    → Dashboard BI (GitHub Pages)
+CSV sources + datasets.yml
+        │
+        ▼
+  Ingestion / SHA-256 lineage
+        │
+        ▼
+ Bronze (immutable source copies)
+        │
+        ▼
+ Silver (normalized CSV + Parquet)
+        │
+        ├── Data contracts / quality results
+        ▼
+ Gold (profiles, PCA, clustering, ML artifacts)
+        │
+        ▼
+ DuckDB analytical warehouse
+   ├── silver_<dataset>
+   ├── dim_dataset
+   ├── dim_run
+   ├── fact_data_quality
+   └── bi_dataset_quality (view)
+        │
+        ▼
+ BI JSON → GitHub Pages
+        │
+        └── MLflow experiment tracking (when a target is explicitly configured)
 ```
 
-- **Bronze:** cópias rastreáveis dos arquivos de entrada, sem alterar as fontes.
-- **Silver:** nomes de colunas padronizados, espaços removidos, valores infinitos tratados e armazenamento CSV + Parquet.
-- **Gold:** manifesto SHA-256, perfil de qualidade, estatística descritiva, cargas/escores PCA, atribuições de clusters, importância de variáveis e métricas de classificação.
-- **DuckDB:** banco analítico local com uma tabela por dataset, consultável em SQL.
-- **BI:** dashboard estático alimentado por um resumo JSON produzido pelo pipeline.
+## Engenharia e governança
 
-## Capacidades
+- **Metadata as code:** `config/datasets.yml` registra datasets, domínio, contratos e configuração de modelos.
+- **Lineage:** SHA-256 dos arquivos de origem, identificação da execução e manifesto de artefatos.
+- **Medallion architecture:** Bronze preserva cópia da fonte; Silver normaliza cabeçalhos/valores e publica CSV/Parquet; Gold concentra produtos analíticos.
+- **Data contracts:** colunas obrigatórias, não nulos, unicidade e domínios aceitos são configuráveis. Violações bloqueiam a execução por padrão.
+- **Warehouse:** DuckDB materializa tabelas Silver e modelo dimensional de qualidade, com consulta SQL local.
+- **Analytics:** perfilamento, missingness, PCA e clustering exploratório.
+- **ML governado:** nenhum target é inferido. O treinamento só ocorre com `model.target` declarado no YAML; validação estratificada, baseline e macro-F1 são registrados. MLflow mantém parâmetros, métricas e artefatos localmente.
+- **Automação:** testes unitários/integração, pipeline e publicação do dashboard por GitHub Actions.
 
-1. Ingestão CSV com detecção de delimitador e rastreabilidade SHA-256.
-2. Qualidade: dimensões, duplicatas, ausências por coluna, tipos e colunas constantes.
-3. Estatística descritiva e análise de componentes principais (PCA).
-4. Clusterização K-means exploratória e coeficiente silhouette quando aplicável.
-5. Classificação Random Forest quando há alvo categórico com amostras suficientes, validação cruzada estratificada, acurácia, macro-F1 e importância de atributos.
-6. Persistência em Parquet e consultas analíticas com DuckDB.
-7. Dashboard BI com catálogo de dados, cobertura, qualidade, variância explicada, agrupamentos e métricas de ML.
-8. R: funções reutilizáveis para PCA e clusterização hierárquica, além dos scripts didáticos originais.
-
-A seleção automática de alvo é heurística e deve ser revisada antes de qualquer interpretação. Em bases pequenas, a validação cruzada pode ser instável. PCA e clustering são exploratórios e não implicam causalidade. Matrizes de distância e similaridade requerem interpretação específica e não devem ser tratadas automaticamente como observações independentes.
-
-## Estrutura
-
-```text
-data/
-  raw/       # fontes de trabalho, cópias dos CSVs originais
-  bronze/    # cópias imutáveis + manifesto
-  silver/    # CSV e Parquet normalizados
-  gold/      # relatórios, modelos, banco DuckDB
-python/src/estat_multivariada/
-R/functions/ # funções reutilizáveis
-R/scripts/   # execução parametrizada
-tests/       # testes automatizados
-docs/        # dashboard BI
-.github/workflows/
-```
-
-## Execução local
+## Executar
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
 pip install -r python/requirements.txt -r python/requirements-dev.txt
-PYTHONPATH=python/src python -m estat_multivariada.cli run --input data/raw --output data --docs-data docs/data
+PYTHONPATH=python/src python -m estat_multivariada.cli run \\
+  --input data/raw --output data --docs-data docs/data \\
+  --config config/datasets.yml
 PYTHONPATH=python/src pytest -q
-Rscript R/scripts/run_multivariate.R data/raw/Euroemp.csv /tmp/r-multivariate
 ```
 
-## Business Intelligence
+Consultar o warehouse:
 
-Depois de ativar GitHub Pages com GitHub Actions, acesse:
+```python
+import duckdb
+con = duckdb.connect("data/gold/analytics.duckdb", read_only=True)
+print(con.sql("SELECT * FROM bi_dataset_quality").df())
+```
+
+## Configurar um experimento supervisionado
+
+Somente após confirmar a semântica da variável resposta e revisar features/leakage, adicione ao item correspondente:
+
+```yaml
+model:
+  target: classe_confirmada
+  exclude_features: [id, identificador_de_vazamento]
+```
+
+O pipeline falha explicitamente quando o target configurado não existe ou não há amostra/classe suficiente. Não configure targets apenas para obter métricas.
+
+## Interpretação científica
+
+PCA e clustering são exploratórios. Silhouette não comprova existência de grupos naturais. Métricas de classificação dependem da amostra, desenho de validação e definição do alvo; não sustentam causalidade. Os scripts originais de MANOVA, análise fatorial, discriminante, correlação canônica, escalonamento multidimensional e ordenação permanecem preservados e devem ser avaliados segundo seus pressupostos.
+
+## Estrutura
+
+- `config/`: metadata e contratos.
+- `data/raw/`: fontes originais.
+- `data/bronze/`, `data/silver/`, `data/gold/`: camadas de dados.
+- `python/src/estat_multivariada/`: pipeline e CLI.
+- `R/` e scripts `MEM*.R`: métodos e material original.
+- `tests/`: testes automatizados.
+- `docs/`: dashboard público.
+- `.github/workflows/`: CI, pipeline e publicação.
+
+## Dashboard
+
 https://iamdatagabs.github.io/EstatMultivariada/
-
-O dashboard apresenta o catálogo, volume, qualidade, PCA, clustering e modelos supervisionados. Os artefatos detalhados ficam em `data/gold/`.
-
-## Automação
-
-O workflow `.github/workflows/data-pipeline.yml` testa o código Python, valida e executa o fluxo R, roda o ETL/analytics/ML e publica o dashboard. É acionado por alterações em dados/código, execução manual e agenda semanal. O workflow `.github/workflows/tests.yml` mantém a checagem de qualidade em pull requests.
-
-## Limites metodológicos e proveniência
-
-Os resultados dependem das características de cada base. A classificação é omitida quando as classes não sustentam validação cruzada. O algoritmo e o alvo selecionados devem ser confirmados por quem conduz a análise. Os materiais da disciplina permanecem na raiz para preservar autoria e proveniência. Consulte a licença/origem de cada base antes de redistribuí-la.
