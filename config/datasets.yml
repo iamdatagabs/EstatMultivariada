@@ -2,45 +2,37 @@ version: 1
 defaults:
   encoding: utf-8-sig
   csv_detection: python-engine-sniff
-# Explicit metadata prevents accidental model-target inference.
+# Targets are intentionally absent until their semantics are reviewed.
 datasets:
   - file: Euroemp.csv
     description: Dataset de exemplo para análise multivariada.
     domain: teaching
-    contract:
-      fail_on_error: true
-  - file: Plants Steneryd Reserve.csv
+    contract: {fail_on_error: true}
+  - file: Plants_Steneryd_Reserve.csv
     description: Dados de reserva vegetal.
     domain: ecology
-    contract:
-      fail_on_error: true
-  - file: Road distances NZ.csv
-    description: Matriz/dados de distâncias rodoviárias.
+    contract: {fail_on_error: true}
+  - file: Road_distances_NZ.csv
+    description: Dados de distâncias rodoviárias.
     domain: geography
-    contract:
-      fail_on_error: true
-  - file: Voting NJ Congressmen.csv
+    contract: {fail_on_error: true}
+  - file: Voting_NJ_Congressmen.csv
     description: Votações de congressistas de New Jersey.
     domain: social_science
-    contract:
-      fail_on_error: true
+    contract: {fail_on_error: true}
   - file: borboletas.csv
     description: Dados de borboletas.
     domain: ecology
-    contract:
-      fail_on_error: true
+    contract: {fail_on_error: true}
   - file: caes.csv
     description: Dados de cães.
     domain: teaching
-    contract:
-      fail_on_error: true
+    contract: {fail_on_error: true}
   - file: cranios_egipicios.csv
     description: Medidas cranianas históricas.
     domain: anthropology
-    contract:
-      fail_on_error: true
+    contract: {fail_on_error: true}
   - file: pardocas.csv
     description: Dados de exemplo multivariado.
     domain: teaching
-    contract:
-      fail_on_error: true
+    contract: {fail_on_error: true}
