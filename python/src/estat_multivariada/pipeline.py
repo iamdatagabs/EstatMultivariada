@@ -138,7 +138,8 @@ def analyze(frame: pd.DataFrame, name: str, gold: Path, model_config: dict | Non
         if target not in frame.columns:
             raise ValueError(f"Configured ML target '{target}' does not exist in {name}")
         excluded = set((model_config or {}).get("exclude_features", [])) | {target}
-        features = frame.select_dtypes(include=[np.number]).drop(columns=list(excluded & set(frame.columns)))
+        features = frame.select_dtypes(include=[np.number])
+        features = features.drop(columns=list(excluded & set(features.columns)))
         labels = frame[target]
         mask = labels.notna()
         features, labels = features.loc[mask], labels.loc[mask].astype(str)
