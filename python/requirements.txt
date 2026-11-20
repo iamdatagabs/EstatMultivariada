@@ -5,3 +5,4 @@ scikit-learn>=1.4
 pyyaml>=6.0
 duckdb>=1.1
 pyarrow>=17
+jsonschema>=4.22,<5
